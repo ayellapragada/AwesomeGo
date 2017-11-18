@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/ayellapragada/AwesomeGo#readme",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "ws": "^3.3.1"
   }
 }
