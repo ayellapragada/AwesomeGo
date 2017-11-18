@@ -1,0 +1,24 @@
+{
+  "name": "AwesomeGo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "heroku-postbuild": "cd client/ && npm install --only=dev && npm install && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ayellapragada/AwesomeGo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ayellapragada/AwesomeGo/issues"
+  },
+  "homepage": "https://github.com/ayellapragada/AwesomeGo#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
