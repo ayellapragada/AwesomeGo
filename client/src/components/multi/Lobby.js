@@ -13,7 +13,9 @@ class Lobby extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    this.socket = new WebSocket(`ws://localhost:5000`);
+    const HOST = window.location.origin.replace(/^http/, 'ws');
+    const noPort = HOST.match(/(.*)(:\d\d\d\d)/)[1];
+    this.socket = new WebSocket(`${noPort}:5000`);
 
     this.socket.onopen = msg => {
       this.socket.send(JSON.stringify({ type: 'lobby', payload: id }));
