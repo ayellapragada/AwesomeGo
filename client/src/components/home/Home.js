@@ -10,7 +10,8 @@ const Home = (props) => {
     <div>
       <div>
         <Link to="/solo"> Solo </Link>
-        <Link to={`/multi/9`}> Multi </Link>
+        <Link to={`/multi/9`}> 9 </Link>
+        <Link to={`/multi/${randomId}`}> Multi </Link>
       </div>
       <Instructions />
     </div>
@@ -19,4 +20,3 @@ const Home = (props) => {
 
 export default Home;
 
-        // <Link to={`/multi/${randomId}`}> Multi </Link>
