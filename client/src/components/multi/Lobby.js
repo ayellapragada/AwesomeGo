@@ -14,8 +14,13 @@ class Lobby extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     const HOST = window.location.origin.replace(/^http/, 'ws');
-    const noPort = HOST.match(/(.*)(:\d\d\d\d)/)[1];
-    this.socket = new WebSocket(`${noPort}:5000`);
+
+    // Need port on local server.
+    // const noPort = HOST.match(/(.*)(:\d\d\d\d)/)[1];
+    // this.socket = new WebSocket(`${noPort}:5000`); 
+
+    // No Port needed for heroku I think.
+    this.socket = new WebSocket(`${HOST}`); 
 
     this.socket.onopen = msg => {
       this.socket.send(JSON.stringify({ type: 'lobby', payload: id }));
