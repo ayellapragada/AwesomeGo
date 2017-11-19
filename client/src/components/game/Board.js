@@ -24,6 +24,7 @@ class Board {
     this.pass = this.pass.bind(this);
     this.switchPlayers = this.switchPlayers.bind(this);
     this.makeComputerMove = this.makeComputerMove.bind(this);
+    this.findGoodMove = this.findGoodMove.bind(this);
   }
 
   makeGrid(size) {
@@ -166,12 +167,26 @@ class Board {
     //
     // Or computer can pass....?
 
-    let move = [this.findRandomMove(0, 18), this.findRandomMove(0, 18)];
-    const [row, col] = move;
-    if (this.grid[row][col] !== EMPTY) {
-      move = this.findGoodMove();
+    // Alternative: Find all enemy groups, then attack in a way that a liberty
+    // is removed. Prioritize groups with least liberties.
+
+    // const otherColor = this.currentColor === BLACK ? WHITE : BLACK;
+
+    const [row, col] = this.history[this.history.length-1];
+    const moves = this.getAdjacentNeighbors(row, col);
+
+    const potentialMoves = [];
+
+    for (let i = 0; i < moves.length; i++) {
+      let move = moves[i];
+      let [tempRow, tempCol] = move;
+      if (this.grid[tempRow][tempCol] === 0) { potentialMoves.push(move); }
     }
-    return move;
+
+    return potentialMoves[Math.floor(Math.random()*potentialMoves.length)];
+  }
+
+  findAllGroups(color) {
   }
 
   findRandomMove(min, max) {
@@ -188,11 +203,13 @@ class Board {
   }
 
   makeComputerMove() {
-    // Using this to test if game over works. It does.
-    // this.pass();
-
-    let move = this.findGoodMove();
-    this.makeMove(move[0], move[1]);
+    if (this.lastMovePassed) {
+      // Using this to test if game over works. It does.
+      this.pass();
+    } else {
+      let move = this.findGoodMove();
+      this.makeMove(move[0], move[1]);
+    }
   }
 
   switchPlayers() {

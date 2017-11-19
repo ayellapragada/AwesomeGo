@@ -153,7 +153,7 @@ class Display extends Component {
                 { intersectionList }
               </div>
             </div>
-            <div style={{display: 'flex', flexWrap: 'wrapped'}}>
+            <div style={{display: 'flex', flexWrap: 'wrap'}}>
               { historyList }
             </div>
             <Chat 
