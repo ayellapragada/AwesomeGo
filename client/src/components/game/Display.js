@@ -127,43 +127,42 @@ class Display extends Component {
     }
 
     return (
-      <div>
-        Display: {currentPlayer.name} 
-        <br />
-        Your ID: {sessionStorage.getItem('id')}
+      <div style={outerContainerStyle}>
         <div>
+          Display: {currentPlayer.name} 
+          <br />
+          Your ID: {yourId}
+          <br />
           {playerOne.name} - {playerOne.captured}
           <br />
           {playerTwo.name} - {playerTwo.captured}
           <br />
           Game Status: { over ? "Over" : "In Progress" }
           <br />
-          Turn: {Number(currentPlayer.name) 
-              === Number(yourId) ? "Yours" : "Theirs"}
-            </div>
-            <button onClick={this.handlePass} type="text">Pass</button>
-            <div 
-              style={gridContainerPositionStyle}>
-              <div 
-                style={{
-                  height: `${(TILE_SIZE + 2) * size}px`, 
-                  width: `${(TILE_SIZE - 1) * size}px`,
-                  ...gridContainerStyle,
-                }}>
-                { intersectionList }
-              </div>
-            </div>
-            <div style={{display: 'flex', flexWrap: 'wrap'}}>
-              { historyList }
-            </div>
-            <Chat 
-              yourId={yourId}
-              messages={this.state.messages} 
-              input={this.state.input} 
-              updateInput={this.updateInput}
-              sendMessage={this.sendMessage}
-            />
-          </div>
+          Turn: {Number(currentPlayer.name) === Number(yourId) ? "Yours" : "Theirs"}
+          <button onClick={this.handlePass} type="text">Pass</button>
+        </div>
+
+        <div style={gridContainerPositionStyle}>
+          <div style={{
+            height: `${(TILE_SIZE + 2) * size}px`, 
+            width: `${(TILE_SIZE - 1) * size}px`,
+            ...gridContainerStyle,
+          }}>
+          { intersectionList }
+        </div>
+      </div>
+
+      <div>
+        <div style={historyStyle}>{historyList}</div>
+        <Chat 
+          yourId={yourId}
+          messages={this.state.messages} 
+          input={this.state.input} 
+          updateInput={this.updateInput}
+          sendMessage={this.sendMessage} />
+      </div>
+    </div>
     );
   }
 }
@@ -176,6 +175,14 @@ const gridContainerPositionStyle = {
   alignItems: 'center',
 };
 
+const historyStyle = {
+  display: 'flex',
+  flexWrap: 'wrap',
+  overflowX: 'auto',
+  width: '500px',
+  height: '100px',
+};
+
 const gridContainerStyle = {
   display: 'flex', 
   flexWrap: 'wrap',
@@ -183,4 +190,9 @@ const gridContainerStyle = {
   padding: '20px',
   paddingBottom: '30px',
   border: '1px solid black',
+};
+
+const outerContainerStyle = {
+  display: 'flex',
+  justifyContent: 'space-around',
 };

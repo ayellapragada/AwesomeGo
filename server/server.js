@@ -92,11 +92,6 @@ wss.on('connection', function connection(ws) {
       default:
         break;
     }
-
-    //log the received message and send it back to the client
-    // console.log('received: %s', message);
   });
-
-  //send immediatly a feedback to the incoming connection    
 });
 
