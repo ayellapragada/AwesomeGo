@@ -33,6 +33,10 @@ class Display extends Component {
             this.state.board.makeMove(Number(obj.move[0]), Number(obj.move[1]));
             this.forceUpdate();
             break;
+          case 'newPassReceieved':
+            this.state.board.pass();
+            this.forceUpdate();
+            break;
           case 'addMessage':
             that.setState({ messages: [...that.state.messages, obj.payload] });
             break;
@@ -50,6 +54,15 @@ class Display extends Component {
         Number(this.state.board.playerOne.name) ? this.state.board.playerTwo.name : this.state.board.playerOne.name); 
 
     let payload = { type: 'newMoveMade', move: [row, col], player: otherPlayer };
+    this.props.socket.send(JSON.stringify(payload));
+  }
+
+  sendPass() {
+    const otherPlayer = 
+      ( Number(sessionStorage.getItem('id')) ===
+        Number(this.state.board.playerOne.name) ? this.state.board.playerTwo.name : this.state.board.playerOne.name); 
+
+    let payload = { type: 'newPassMade', player: otherPlayer };
     this.props.socket.send(JSON.stringify(payload));
   }
 
@@ -96,6 +109,13 @@ class Display extends Component {
   }
 
   handlePass() {
+    const yourId = Number(sessionStorage.getItem('id'));
+    if (Number(this.state.board.currentPlayer.name) !== yourId ) {
+      return false;
+    }
+    if (this.props.socket) {
+      this.sendPass();
+    }
     this.state.board.pass();
     this.forceUpdate();
   }

@@ -76,6 +76,12 @@ wss.on('connection', function connection(ws) {
           move: obj.move,
         }));
         break;
+      case 'newPassMade':
+        player = obj.player;
+        lookup[player].send(JSON.stringify({
+          type: 'newPassReceieved',
+        }));
+        break;
       case 'sendNewMessage':
         var recipientId = obj.recipientId;
 
