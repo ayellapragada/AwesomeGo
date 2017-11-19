@@ -5,7 +5,7 @@ import GameStart from './GameStart';
 const Solo = (props) => {
   return (
     <div>
-      <GameStart start />
+      <GameStart solo one={0} two={'HAL'} />
     </div>
   );
 };

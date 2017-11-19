@@ -11,8 +11,8 @@ class GameStart extends Component {
 
     this.state = { 
       board: "",
-      playerOneType: `${props.one === 0 ? "Computer" : "Human"}`,
-      playerTwoType: `${props.two === 0 ? "Computer" : "Human"}`,
+      playerOneType: `Human`,
+      playerTwoType: `${props.solo ? "Computer" : "Human"}`,
       size: 19,
       handicap: 0,
     };

@@ -19,6 +19,7 @@ class Board {
     this.inAtari = false;
     this.attemptedSuicde = false;
     this.makeMove = this.makeMove.bind(this);
+    this.switchPlayers = this.switchPlayers.bind(this);
   }
 
   makeGrid(size) {
@@ -141,6 +142,15 @@ class Board {
     console.log('GAME OVERRR');
   }
 
+  findGoodMove() {
+    let i = 0;
+    let j = 0;
+    while (this.grid[i][j] !== EMPTY) {
+      i += 1;
+    }
+    return [i, j];
+  }
+
   pass() {
     if (this.lastMovePassed) {
       this.endGame();
@@ -153,6 +163,11 @@ class Board {
     this.currentColor = this.currentColor === BLACK ? WHITE : BLACK;
     this.currentPlayer = 
       this.currentPlayer === this.playerOne ? this.playerTwo : this.playerOne;
+
+    if (this.currentPlayer.name === "HAL") {
+      let move = this.findGoodMove();
+      this.makeMove(move[0], move[1]);
+    }
   }
 }
 

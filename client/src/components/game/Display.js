@@ -17,34 +17,42 @@ class Display extends Component {
   }
 
   componentDidMount() {
-    this.props.socket.onmessage = (msg) => {
-      const obj = JSON.parse(msg.data);
-      switch (obj.type) {
+    if (this.props.socket) {
+      this.props.socket.onmessage = (msg) => {
+        const obj = JSON.parse(msg.data);
+        switch (obj.type) {
 
-        case 'newMoveReceieved':
-          this.state.board.makeMove(Number(obj.move[0]), Number(obj.move[1]));
-          this.forceUpdate();
-      }
-    };
+          case 'newMoveReceieved':
+            this.state.board.makeMove(Number(obj.move[0]), Number(obj.move[1]));
+            this.forceUpdate();
+            break;
+          default: 
+            break;
+        }
+      };
+    }
+
   }
 
   sendMove(row, col) {
     const otherPlayer = 
       ( Number(sessionStorage.getItem('id')) ===
-      Number(this.state.board.playerOne.name) ? this.state.board.playerTwo.name : this.state.board.playerOne.name); 
+        Number(this.state.board.playerOne.name) ? this.state.board.playerTwo.name : this.state.board.playerOne.name); 
 
     let payload = { type: 'newMoveMade', move: [row, col], player: otherPlayer };
     this.props.socket.send(JSON.stringify(payload));
   }
 
   handleClick(row, col) {
-      if ( Number(sessionStorage.getItem('id')) !==
-        Number(this.state.board.currentPlayer.name)) {
-        return false;
-      }
+    if ( Number(sessionStorage.getItem('id')) !==
+      Number(this.state.board.currentPlayer.name)) {
+      return false;
+    }
 
     this.state.board.makeMove(row, col);
-    this.sendMove(row, col);
+    if (this.props.socket) {
+      this.sendMove(row, col);
+    }
     this.forceUpdate();
   }
 
