@@ -147,7 +147,7 @@ class Board {
 
   endGame() {
     this.over = true;
-    const winner = this.scoreGame();
+    // const winner = this.scoreGame();
     console.log('winner');
   }
 
