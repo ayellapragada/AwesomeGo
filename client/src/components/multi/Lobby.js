@@ -19,7 +19,8 @@ class Lobby extends Component {
     // if on heroku don't need port
     // } else {
     // else if local we do need host
-    //
+
+      console.log(HOST);
     if (HOST.indexOf("localhost" !== -1)) {
       const noPort = HOST.match(/(.*)(:\d\d\d\d)/)[1];
       this.socket = new WebSocket(`${noPort}:5000`); 
