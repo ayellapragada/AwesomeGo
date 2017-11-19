@@ -1,8 +1,12 @@
 import React from 'react';
 
-const Chat = ({ messages, input, updateInput, sendMessage }) => {
+const Chat = ({ messages, input, updateInput, sendMessage, yourId }) => {
   const messageList = messages.map((msg, i) => {
-    return <li key={i}>{msg.playerId}: {msg.text}</li>;
+    return(
+      <li key={i}>
+        {msg.playerId === yourId ? "You" : "Them" }: {msg.text}
+      </li>
+    ); 
   });
 
   return (

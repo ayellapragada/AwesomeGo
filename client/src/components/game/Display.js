@@ -104,6 +104,7 @@ class Display extends Component {
   render() {
     const { playerOne, playerTwo, 
       currentPlayer, size, grid, history, over } = this.state.board;
+    const yourId = sessionStorage.getItem('id');
 
     const intersectionList = [];
     const historyList = history.map((move, i) => (
@@ -154,6 +155,7 @@ class Display extends Component {
           { historyList }
         </div>
         <Chat 
+          yourId={yourId}
           messages={this.state.messages} 
           input={this.state.input} 
           updateInput={this.updateInput}
