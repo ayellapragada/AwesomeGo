@@ -149,13 +149,12 @@ class Board {
     // const move = this.history[this.history.length -1];
     // return [move[0]+1, move[1]+1];
 
-    const move = [this.findRandomMove(0, 18), this.findRandomMove(0, 18)];
+    // whatever weird bug we have here should just go away anywas.
+    let move = [this.findRandomMove(0, 18), this.findRandomMove(0, 18)];
     const [row, col] = move;
-    while (this.grid[row][col] !== EMPTY) {
-      move[0] += 1;
-      move[1] += 1;
+    if (this.grid[row][col] !== EMPTY) {
+      move = this.findGoodMove();
     }
-
     return move;
   }
 

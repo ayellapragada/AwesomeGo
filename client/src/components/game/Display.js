@@ -104,7 +104,6 @@ class Display extends Component {
           </div>
         </div>
         <div style={{display: 'flex', flexWrap: 'wrapped'}}>
-          {historyList}
         </div>
       </div>
     );
