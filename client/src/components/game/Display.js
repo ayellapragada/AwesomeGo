@@ -174,20 +174,22 @@ class Display extends Component {
       </div>
 
       <div>
-        <div style={historyStyle}>{historyList}</div>
-        <Chat 
-          yourId={yourId}
-          messages={this.state.messages} 
-          input={this.state.input} 
-          updateInput={this.updateInput}
-          sendMessage={this.sendMessage} />
+
       </div>
+
     </div>
     );
   }
 }
 export default Display;
 
+        // <div style={historyStyle}>{historyList}</div>
+        // <Chat 
+        //   yourId={yourId}
+        //   messages={this.state.messages} 
+        //   input={this.state.input} 
+        //   updateInput={this.updateInput}
+        //   sendMessage={this.sendMessage} />
 
 const gridContainerPositionStyle = {
   display: 'flex', 

@@ -113,6 +113,7 @@ class Board {
     let visitedList = [];
     let queue = [[row, col]];
     let count = 0;
+    let libertyPositions = [];
 
 
     while (queue.length > 0) {
@@ -131,6 +132,7 @@ class Board {
 
         if (valueOfNeighbor === EMPTY) {
           count++;
+          libertyPositions.push([neighborRow, neighborCol]);
         }
 
         if (valueOfNeighbor === color) {
@@ -142,7 +144,7 @@ class Board {
       visitedList.push(stone);
     }
 
-    return { liberties: count, stones: visitedList };
+    return { liberties: count, stones: visitedList, libertyPositions };
   }
 
   endGame() {
@@ -170,23 +172,43 @@ class Board {
     // Alternative: Find all enemy groups, then attack in a way that a liberty
     // is removed. Prioritize groups with least liberties.
 
-    // const otherColor = this.currentColor === BLACK ? WHITE : BLACK;
+    const otherColor = this.currentColor === BLACK ? WHITE : BLACK;
+    const optimalMove = this.findAllGroups(otherColor);
 
-    const [row, col] = this.history[this.history.length-1];
-    const moves = this.getAdjacentNeighbors(row, col);
-
-    const potentialMoves = [];
-
-    for (let i = 0; i < moves.length; i++) {
-      let move = moves[i];
-      let [tempRow, tempCol] = move;
-      if (this.grid[tempRow][tempCol] === 0) { potentialMoves.push(move); }
-    }
-
-    return potentialMoves[Math.floor(Math.random()*potentialMoves.length)];
+    return optimalMove ? optimalMove : 
+      [this.findRandomMove(17), this.findRandomMove(17)];
   }
 
-  findAllGroups(color) {
+  findAllGroups(otherColor) {
+    let complexBoard = [];
+    let armies = [];
+
+    const { size } = this;
+
+    for (let row = 0; row < size; row++) {
+      complexBoard.push([]);
+      for (let col = 0; col < size; col++) {
+        if (this.grid[row][col] === otherColor) {
+          complexBoard[row].push({ 
+            row, 
+            col, 
+            color: this.grid[row][col],
+            information: this.getGroup(row, col),
+          });
+        }
+      }
+    }
+
+    const flat = this.flatten(complexBoard)
+      .sort((a, b) => a.information.liberties > b.information.liberties);
+    const move = flat[0].information.libertyPositions;
+    return move[Math.floor(Math.random()*move.length)];
+  }
+
+  flatten(arr) {
+    return arr.reduce((a, b) => {
+      return a.concat(b);
+    });
   }
 
   findRandomMove(min, max) {
