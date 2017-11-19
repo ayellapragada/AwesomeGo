@@ -14,6 +14,7 @@ class Board {
     this.size = size;
     this.handicap = handicap;
     this.grid = grid || this.makeGrid(size);
+    this.history = [];
 
     this.lastMovePassed = false;
     this.inAtari = false;
@@ -65,6 +66,8 @@ class Board {
       this.attemptedSuicde = true;
       return false;
     }
+
+    this.history.push([row, col]);
 
     captured.forEach(group => {
       group.stones.forEach(stone => {
@@ -143,12 +146,21 @@ class Board {
   }
 
   findGoodMove() {
-    let i = 0;
-    let j = 0;
-    while (this.grid[i][j] !== EMPTY) {
-      i += 1;
+    // const move = this.history[this.history.length -1];
+    // return [move[0]+1, move[1]+1];
+
+    const move = [this.findRandomMove(0, 18), this.findRandomMove(0, 18)];
+    const [row, col] = move;
+    while (this.grid[row][col] !== EMPTY) {
+      move[0] += 1;
+      move[1] += 1;
     }
-    return [i, j];
+
+    return move;
+  }
+
+  findRandomMove(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   pass() {

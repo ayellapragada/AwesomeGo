@@ -58,9 +58,12 @@ class Display extends Component {
 
   render() {
     const { playerOne, playerTwo, 
-      currentPlayer, size, grid } = this.state.board;
+      currentPlayer, size, grid, history } = this.state.board;
 
     const intersectionList = [];
+    const historyList = history.map((move, i) => (
+      <div key={i}>{move[0]}-{move[1]} &nbsp;</div>
+    ));
 
     for (let row = 0; row < size; row++) {
       for (let col = 0; col < size; col++) {
@@ -99,6 +102,9 @@ class Display extends Component {
             }}>
             { intersectionList }
           </div>
+        </div>
+        <div style={{display: 'flex', flexWrap: 'wrapped'}}>
+          {historyList}
         </div>
       </div>
     );
