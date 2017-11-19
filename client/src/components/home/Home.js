@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Instructions from './Instructions';
 
 const Home = (props) => {
-  const randomId =  Math.floor(Math.random() * 100);
+  const randomId =  Math.floor(Math.random() * 1000);
 
   return (
     <div>

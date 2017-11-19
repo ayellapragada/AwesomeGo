@@ -4,7 +4,6 @@ import Chat from '../multi/Chat';
 import Intersection, { TILE_SIZE } from './Intersection.js';
 
 class Display extends Component {
-
   constructor(props) {
     super(props);
 
@@ -138,30 +137,33 @@ class Display extends Component {
           {playerTwo.name} - {playerTwo.captured}
           <br />
           Game Status: { over ? "Over" : "In Progress" }
-        </div>
-        <button onClick={this.handlePass} type="text">Pass</button>
-        <div 
-          style={gridContainerPositionStyle}>
-          <div 
-            style={{
-              height: `${(TILE_SIZE + 2) * size}px`, 
-              width: `${(TILE_SIZE - 1) * size}px`,
-              ...gridContainerStyle,
-            }}>
-            { intersectionList }
+          <br />
+          Turn: {Number(currentPlayer.name) 
+              === Number(yourId) ? "Yours" : "Theirs"}
+            </div>
+            <button onClick={this.handlePass} type="text">Pass</button>
+            <div 
+              style={gridContainerPositionStyle}>
+              <div 
+                style={{
+                  height: `${(TILE_SIZE + 2) * size}px`, 
+                  width: `${(TILE_SIZE - 1) * size}px`,
+                  ...gridContainerStyle,
+                }}>
+                { intersectionList }
+              </div>
+            </div>
+            <div style={{display: 'flex', flexWrap: 'wrapped'}}>
+              { historyList }
+            </div>
+            <Chat 
+              yourId={yourId}
+              messages={this.state.messages} 
+              input={this.state.input} 
+              updateInput={this.updateInput}
+              sendMessage={this.sendMessage}
+            />
           </div>
-        </div>
-        <div style={{display: 'flex', flexWrap: 'wrapped'}}>
-          { historyList }
-        </div>
-        <Chat 
-          yourId={yourId}
-          messages={this.state.messages} 
-          input={this.state.input} 
-          updateInput={this.updateInput}
-          sendMessage={this.sendMessage}
-        />
-      </div>
     );
   }
 }

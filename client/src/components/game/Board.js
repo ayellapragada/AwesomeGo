@@ -183,6 +183,7 @@ class Board {
       this.endGame();
     }
     this.lastMovePassed = true;
+    this.history.push(['turn', 'passed']);
     this.switchPlayers();
   }
 
