@@ -15,18 +15,13 @@ class Lobby extends Component {
     const { id } = this.props.match.params;
     const HOST = window.location.origin.replace(/^http/, 'ws');
 
-    // Need port on local server.
-    // if on heroku don't need port
-    // } else {
-    // else if local we do need host
 
-      console.log(HOST);
-    if (HOST.indexOf("localhost" !== -1)) {
-      const noPort = HOST.match(/(.*)(:\d\d\d\d)/)[1];
-      this.socket = new WebSocket(`${noPort}:5000`); 
-    } else {
-      this.socket = new WebSocket(`${HOST}`); 
-    }
+    // if development
+    // const noPort = HOST.match(/(.*)(:\d\d\d\d)/)[1];
+    // this.socket = new WebSocket(`${noPort}:5000`); 
+
+    // if live
+    this.socket = new WebSocket(`${HOST}`); 
 
     this.socket.onopen = msg => {
       this.socket.send(JSON.stringify({ type: 'lobby', payload: id }));
