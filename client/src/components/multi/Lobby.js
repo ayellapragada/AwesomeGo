@@ -16,6 +16,7 @@ class Lobby extends Component {
     const HOST = window.location.origin.replace(/^http/, 'ws');
 
 
+    // Only need to change if doing anything with multiplayer.
     // if development
     // const noPort = HOST.match(/(.*)(:\d\d\d\d)/)[1];
     // this.socket = new WebSocket(`${noPort}:5000`); 

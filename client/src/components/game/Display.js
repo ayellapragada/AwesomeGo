@@ -13,6 +13,7 @@ class Display extends Component {
 
     this.socket = this.props.socket;
     this.handleClick = this.handleClick.bind(this);
+    this.handlePass = this.handlePass.bind(this);
     this.sendMove = this.sendMove.bind(this);
   }
 
@@ -56,9 +57,14 @@ class Display extends Component {
     this.forceUpdate();
   }
 
+  handlePass() {
+    this.state.board.pass();
+    this.forceUpdate();
+  }
+
   render() {
     const { playerOne, playerTwo, 
-      currentPlayer, size, grid, history } = this.state.board;
+      currentPlayer, size, grid, history, over } = this.state.board;
 
     const intersectionList = [];
     const historyList = history.map((move, i) => (
@@ -90,6 +96,8 @@ class Display extends Component {
           {playerOne.name} - {playerOne.captured}
           <br />
           {playerTwo.name} - {playerTwo.captured}
+          <br />
+          Game Status: { over ? "Over" : "In Progress" }
         </div>
 
         <div 
@@ -103,7 +111,9 @@ class Display extends Component {
             { intersectionList }
           </div>
         </div>
+        <button onClick={this.handlePass} type="text">Pass</button>
         <div style={{display: 'flex', flexWrap: 'wrapped'}}>
+          { historyList }
         </div>
       </div>
     );

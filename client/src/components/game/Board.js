@@ -15,12 +15,15 @@ class Board {
     this.handicap = handicap;
     this.grid = grid || this.makeGrid(size);
     this.history = [];
+    this.over = false;
 
     this.lastMovePassed = false;
     this.inAtari = false;
     this.attemptedSuicde = false;
     this.makeMove = this.makeMove.bind(this);
+    this.pass = this.pass.bind(this);
     this.switchPlayers = this.switchPlayers.bind(this);
+    this.makeComputerMove = this.makeComputerMove.bind(this);
   }
 
   makeGrid(size) {
@@ -142,14 +145,26 @@ class Board {
   }
 
   endGame() {
-    console.log('GAME OVERRR');
+    this.over = true;
+    const winner = this.scoreGame();
+  }
+
+  scoreGame() {
+    // For now just return player one always. Ego boost while i make computer.
+    return this.playerOne;
   }
 
   findGoodMove() {
-    // const move = this.history[this.history.length -1];
-    // return [move[0]+1, move[1]+1];
+    // Plan:
+    // Don't just save moves in history, also save points of interest/locations?
+    // Points of interest could be initialized to the dots around it.
+    // Then evaluate next 3 turns for each and determine which one to play on.
+    // Evaluating could involve a board value, or how much territory is had.
+    // From there it'd be minmax with alphapruning.
+    // But first step would be saving PoI
+    //
+    // Or computer can pass....?
 
-    // whatever weird bug we have here should just go away anywas.
     let move = [this.findRandomMove(0, 18), this.findRandomMove(0, 18)];
     const [row, col] = move;
     if (this.grid[row][col] !== EMPTY) {
@@ -170,14 +185,21 @@ class Board {
     this.switchPlayers();
   }
 
+  makeComputerMove() {
+    // Using this to test if game over works. It does.
+    // this.pass();
+
+    let move = this.findGoodMove();
+    this.makeMove(move[0], move[1]);
+  }
+
   switchPlayers() {
     this.currentColor = this.currentColor === BLACK ? WHITE : BLACK;
     this.currentPlayer = 
       this.currentPlayer === this.playerOne ? this.playerTwo : this.playerOne;
 
     if (this.currentPlayer.name === "HAL") {
-      let move = this.findGoodMove();
-      this.makeMove(move[0], move[1]);
+      this.makeComputerMove();
     }
   }
 }
