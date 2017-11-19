@@ -7,7 +7,12 @@ class Lobby extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { one: 0, two: 0, game: false };
+    this.state = { 
+      one: 0, 
+      two: 0, 
+      game: false, 
+    };
+
     this.updatePlayerConnection = this.updatePlayerConnection.bind(this);
   }
 
@@ -15,14 +20,13 @@ class Lobby extends Component {
     const { id } = this.props.match.params;
     const HOST = window.location.origin.replace(/^http/, 'ws');
 
-
     // Only need to change if doing anything with multiplayer.
     // if development
-    // const noPort = HOST.match(/(.*)(:\d\d\d\d)/)[1];
-    // this.socket = new WebSocket(`${noPort}:5000`); 
+    const noPort = HOST.match(/(.*)(:\d\d\d\d)/)[1];
+    this.socket = new WebSocket(`${noPort}:5000`); 
 
     // if live
-    this.socket = new WebSocket(`${HOST}`); 
+    // this.socket = new WebSocket(`${HOST}`); 
 
     this.socket.onopen = msg => {
       this.socket.send(JSON.stringify({ type: 'lobby', payload: id }));
@@ -76,12 +80,16 @@ class Lobby extends Component {
             <br />
             Your ID: {sessionStorage.getItem('id')}
           </div>
-        ) : ( <GameStart 
-          one={one} 
-          two={two} 
-          id={id} 
-          socket={this.socket} 
-        />)
+        ) : ( 
+          <div>
+            <GameStart 
+              one={one} 
+              two={two} 
+              id={id} 
+              socket={this.socket} 
+            />
+          </div>
+        )
         }
       </div>
     );

@@ -76,6 +76,19 @@ wss.on('connection', function connection(ws) {
           move: obj.move,
         }));
         break;
+      case 'sendNewMessage':
+        var recipientId = obj.recipientId;
+
+        var messageToSend = {
+          type: 'addMessage',
+          payload: {
+            playerId: obj.playerId,
+            text: obj.message,
+          },
+        };
+
+        lookup[obj.recipientId].send(JSON.stringify(messageToSend));
+        break;
       default:
         break;
     }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import Chat from '../multi/Chat';
 import Intersection, { TILE_SIZE } from './Intersection.js';
 
 class Display extends Component {
@@ -9,15 +10,21 @@ class Display extends Component {
 
     this.state = {
       board: this.props.board,
+      messages: [], 
+      input: "",
     };
 
     this.socket = this.props.socket;
+    this.componentDidMount = this.componentDidMount.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handlePass = this.handlePass.bind(this);
     this.sendMove = this.sendMove.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
+    this.updateInput = this.updateInput.bind(this);
   }
 
   componentDidMount() {
+    const that = this; // I hate myself for this.
     if (this.props.socket) {
       this.props.socket.onmessage = (msg) => {
         const obj = JSON.parse(msg.data);
@@ -26,6 +33,9 @@ class Display extends Component {
           case 'newMoveReceieved':
             this.state.board.makeMove(Number(obj.move[0]), Number(obj.move[1]));
             this.forceUpdate();
+            break;
+          case 'addMessage':
+            that.setState({ messages: [...that.state.messages, obj.payload] });
             break;
           default: 
             break;
@@ -42,6 +52,35 @@ class Display extends Component {
 
     let payload = { type: 'newMoveMade', move: [row, col], player: otherPlayer };
     this.props.socket.send(JSON.stringify(payload));
+  }
+
+  sendMessage() {
+    const recipientId = 
+      ( Number(sessionStorage.getItem('id')) ===
+        Number(this.state.board.playerOne.name) ? this.state.board.playerTwo.name : this.state.board.playerOne.name); 
+
+
+    if (this.state.board.playerTwo.name !== "HAL") {
+      // if the other person is a player.
+      this.socket.send(JSON.stringify({
+        type: 'sendNewMessage',
+        recipientId,
+        playerId: sessionStorage.getItem('id'), 
+        message: this.state.input,
+      }));
+    } 
+
+    let message = { 
+      playerId: sessionStorage.getItem('id'), 
+      text: this.state.input 
+    };
+
+    this.setState({ messages: [...this.state.messages, message] });
+    this.setState({ input: "" });
+  }
+
+  updateInput(e) {
+    this.setState({ input: e.currentTarget.value  });
   }
 
   handleClick(row, col) {
@@ -99,7 +138,7 @@ class Display extends Component {
           <br />
           Game Status: { over ? "Over" : "In Progress" }
         </div>
-
+        <button onClick={this.handlePass} type="text">Pass</button>
         <div 
           style={gridContainerPositionStyle}>
           <div 
@@ -111,10 +150,15 @@ class Display extends Component {
             { intersectionList }
           </div>
         </div>
-        <button onClick={this.handlePass} type="text">Pass</button>
         <div style={{display: 'flex', flexWrap: 'wrapped'}}>
           { historyList }
         </div>
+        <Chat 
+          messages={this.state.messages} 
+          input={this.state.input} 
+          updateInput={this.updateInput}
+          sendMessage={this.sendMessage}
+        />
       </div>
     );
   }
