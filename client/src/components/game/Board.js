@@ -20,11 +20,14 @@ class Board {
     this.lastMovePassed = false;
     this.inAtari = false;
     this.attemptedSuicde = false;
+    this.attemptMove = this.attemptMove.bind(this);
     this.makeMove = this.makeMove.bind(this);
     this.pass = this.pass.bind(this);
     this.switchPlayers = this.switchPlayers.bind(this);
     this.makeComputerMove = this.makeComputerMove.bind(this);
     this.findGoodMove = this.findGoodMove.bind(this);
+    this.validMove = this.validMove.bind(this);
+    this.findAllGroups = this.findAllGroups.bind(this);
   }
 
   makeGrid(size) {
@@ -173,23 +176,33 @@ class Board {
     // is removed. Prioritize groups with least liberties.
 
     const otherColor = this.currentColor === BLACK ? WHITE : BLACK;
-    const optimalMove = this.findAllGroups(otherColor);
+    let groups = this.findAllGroups(otherColor);
+    let byLiberties = {};
 
-    return optimalMove ? optimalMove : 
-      [this.findRandomMove(17), this.findRandomMove(17)];
+    for (let i = 0; i < groups.length; i++) {
+      const group = groups[i];
+      const { liberties, libertyPositions } = group.information;
+
+      if (byLiberties[liberties]) {
+        byLiberties[liberties].concat(libertyPositions);
+      } else {
+        byLiberties[liberties] = libertyPositions;
+      }
+    }
+
+    let libertyValues = Object.keys(byLiberties).sort((a, b) => a > b);
+    this.attemptMove(byLiberties, libertyValues);
   }
 
   findAllGroups(otherColor) {
-    let complexBoard = [];
-    let armies = [];
+    let groups = [];
 
     const { size } = this;
 
     for (let row = 0; row < size; row++) {
-      complexBoard.push([]);
       for (let col = 0; col < size; col++) {
         if (this.grid[row][col] === otherColor) {
-          complexBoard[row].push({ 
+          groups.push({ 
             row, 
             col, 
             color: this.grid[row][col],
@@ -199,16 +212,72 @@ class Board {
       }
     }
 
-    const flat = this.flatten(complexBoard)
-      .sort((a, b) => a.information.liberties > b.information.liberties);
-    const move = flat[0].information.libertyPositions;
-    return move[Math.floor(Math.random()*move.length)];
+    return groups;
+  }
+
+  attemptMove(libertiesObj, libertiesKeys) {
+    for (let i = 0; i < libertiesKeys.length; i++) {
+      // let liberties = this.shuffle(libertiesObj[libertiesKeys[i]]);
+      // let liberties = this.unique(libertiesObj[libertiesKeys[i]]);
+      let liberties = this.shuffle(this.unique(libertiesObj[libertiesKeys[i]]));
+      for (let j = 0; j < liberties.length; j++) {
+        let [row, col] = liberties[j];
+        if (this.validMove(row, col)) {
+          this.makeMove(row, col);
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  validMove(row, col) {
+    if (this.grid[row][col] !== EMPTY) {
+      return false;
+    }
+
+    let color = this.grid[row][col] = this.currentColor;
+    let captured = [];
+    let neighbors = this.getAdjacentNeighbors(row, col);
+
+    neighbors.forEach(pos => {
+      const [ tempRow, tempCol ] = pos;
+      let valueOfPos = this.grid[tempRow][tempCol];
+
+      if (valueOfPos !== EMPTY && valueOfPos !== color) {
+        let group = this.getGroup(tempRow, tempCol);
+        if (group.liberties === 0) {
+          captured.push(group);
+        }
+      }
+    });
+
+    if (captured.length === 0 && this.getGroup(row, col).liberties === 0) {
+      this.grid[row][col] = EMPTY;
+      return false;
+    }
+
+    this.grid[row][col] = EMPTY;
+    return true;
   }
 
   flatten(arr) {
     return arr.reduce((a, b) => {
       return a.concat(b);
     });
+  }
+
+  shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  unique(arr) {
+    return arr.filter((item, pos) => arr.indexOf(item) === pos);
   }
 
   findRandomMove(min, max) {
@@ -229,8 +298,7 @@ class Board {
       // Using this to test if game over works. It does.
       this.pass();
     } else {
-      let move = this.findGoodMove();
-      this.makeMove(move[0], move[1]);
+      this.findGoodMove();
     }
   }
 
