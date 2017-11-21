@@ -37,8 +37,6 @@ wss.on('connection', function connection(ws) {
   lookup[wsId] = ws;
   ws.send(JSON.stringify({ type: 'open', payload: wsId }));
 
-
-  //connection is up, let's add a simple simple event
   ws.on('message', function incoming(message) {
     var obj = JSON.parse(message);
     switch (obj.type){

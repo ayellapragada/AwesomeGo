@@ -22,11 +22,11 @@ class Lobby extends Component {
 
     // Only need to change if doing anything with multiplayer.
     // if development
-    const noPort = HOST.match(/(.*)(:\d\d\d\d)/)[1];
-    this.socket = new WebSocket(`${noPort}:5000`); 
+    // const noPort = HOST.match(/(.*)(:\d\d\d\d)/)[1];
+    // this.socket = new WebSocket(`${noPort}:5000`); 
 
     // if live
-    // this.socket = new WebSocket(`${HOST}`); 
+    this.socket = new WebSocket(`${HOST}`); 
 
     this.socket.onopen = msg => {
       this.socket.send(JSON.stringify({ type: 'lobby', payload: id }));
@@ -74,11 +74,13 @@ class Lobby extends Component {
       <div>
         { !game ? (
           <div>
-            Player One Loaded ? { one }
+            Player One Loaded ? { one > 0 ? "True" : "False" }
             <br />
-            Player Two Loaded ? { two }
+            Player Two Loaded ? { two > 0 ? "True" : "False" }
             <br />
             Your ID: {sessionStorage.getItem('id')}
+            <br />
+            To share the link, give your friend the URL.
           </div>
         ) : ( 
           <div>

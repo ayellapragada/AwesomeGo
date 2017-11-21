@@ -7,15 +7,60 @@ const Home = (props) => {
   const randomId =  Math.floor(Math.random() * 100000);
 
   return (
-    <div>
-      <div>
-        <Link to="/solo"> Solo </Link>
-        <Link to={`/multi/9`}> 9 </Link>
-        <Link to={`/multi/${randomId}`}> Multi </Link>
+    <div style={containerStyle}>
+      <div style={innerContainerStyle}>
+        <Link style={linkStyle} to="/solo">
+          <div style={linkContainerStyle}>
+            <i className="fa fa-user" aria-hidden="true"></i>
+            &nbsp;
+            Play Against AI 
+          </div>
+        </Link>
+        <Link style={linkStyle} to={`/multi/${randomId}`}>
+          <div style={linkContainerStyle}>
+            <i className="fa fa-users" aria-hidden="true"></i>
+            &nbsp;
+            Play Against Friends 
+          </div>
+        </Link>
       </div>
-      <Instructions />
+        <Instructions />
+        <Link to={`/multi/9`}> 9 </Link>
     </div>
   );
+};
+
+
+const containerStyle = {
+  height: '60vh',
+  border: '1px solid black',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-around',
+  alignItems: 'center',
+};
+
+const innerContainerStyle = {
+  display: 'flex',
+  justifyContent: 'space-around',
+  width: '100%',
+};
+
+const linkStyle = {
+  textDecoration: 'none',
+  color: 'white',
+  fontSize: '22px',
+};
+
+const linkContainerStyle = {
+  border: '1px solid black',
+  borderRadius: '5px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  margin: '10px',
+  padding: '40px 90px',
+  backgroundColor: '#2480ff',
 };
 
 export default Home;
