@@ -138,6 +138,7 @@ class Display extends Component {
             col={col} 
             value={grid[row][col]} 
             key={`${row} ${col}`} 
+            star={_checkIfInArray(row, col)}
             lastRow={row === (size - 1)}
             lastCol={col === (size -1)}
             handleClick={this.handleClick}
@@ -188,8 +189,26 @@ class Display extends Component {
     );
   }
 }
+
 export default Display;
 
+const _checkIfInArray = (row, col) => {
+  for (let i = 0; i < starLocations.length; i++) {
+    let star = starLocations[i];
+    if (star[0] === row && star[1] === col) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+const starLocations =
+  [
+    [3, 3], [3, 9], [3, 15],
+    [9, 3], [9, 9], [9, 15],
+    [15, 3], [15, 9], [15, 15]
+  ];
 
 const gridContainerPositionStyle = {
   display: 'flex', 

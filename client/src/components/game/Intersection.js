@@ -3,7 +3,8 @@ import React from 'react';
 export const TILE_SIZE = 30;
 // const CLICK_SIZE = 5;
 
-const Intersection = ({ row, col, value, lastRow, lastCol, handleClick }) => {
+const Intersection = props => {
+  const { row, col, value, lastRow, lastCol, handleClick, star } = props;
   const intersectionStyle = {
     width: `${TILE_SIZE / 2}px`,
     height: `${TILE_SIZE / 2}px`,
@@ -11,6 +12,16 @@ const Intersection = ({ row, col, value, lastRow, lastCol, handleClick }) => {
     marginLeft: `-${TILE_SIZE / 4}px`,
     boxSizing: 'border-box',
     cursor: 'pointer',
+  };
+
+  const starStyle = {
+    width: `${TILE_SIZE / 6}px`,
+    height: `${TILE_SIZE / 6}px`,
+    marginTop: `${TILE_SIZE / 8}px`,
+    marginLeft: `${TILE_SIZE / 8}px`,
+    border: '1px solid black',
+    backgroundColor: 'black',
+    borderRadius: '20px',
   };
 
   const containerStyle = {
@@ -54,7 +65,9 @@ const Intersection = ({ row, col, value, lastRow, lastCol, handleClick }) => {
       <div 
         onClick={handleClickOnIntersection}
         style={{ ...intersectionStyle, ...styleLinks[value] }} 
-      />
+      >
+        {star && <div style={starStyle} />}
+      </div>
     </div>
   );
 };
