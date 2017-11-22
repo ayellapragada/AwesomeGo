@@ -220,6 +220,8 @@ class Board {
       // let liberties = this.shuffle(libertiesObj[libertiesKeys[i]]);
       // let liberties = this.unique(libertiesObj[libertiesKeys[i]]);
       let liberties = this.shuffle(this.unique(libertiesObj[libertiesKeys[i]]));
+      // let bestMove = liberties[0];
+      // potentially where we can do min max stuff. 
       for (let j = 0; j < liberties.length; j++) {
         let [row, col] = liberties[j];
         if (this.validMove(row, col)) {
@@ -295,7 +297,6 @@ class Board {
 
   makeComputerMove() {
     if (this.lastMovePassed) {
-      // Using this to test if game over works. It does.
       this.pass();
     } else {
       this.findGoodMove();

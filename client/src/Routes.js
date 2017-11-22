@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import Navbar from './components/navbar/Navbar';
+import Footer from './components/navbar/Footer';
 import Solo from './components/game/Solo';
 import Lobby from './components/multi/Lobby.js';
 import Home from './components/home/Home';
@@ -15,6 +16,7 @@ const Routes = (props) => {
         <Route exact path="/solo" component={Solo} />
         <Route exact path="/multi/:id" component={Lobby} />
       </Switch>
+      <Footer />
     </div>
   );
 };

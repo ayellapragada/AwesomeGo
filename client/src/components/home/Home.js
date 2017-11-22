@@ -24,8 +24,8 @@ const Home = (props) => {
           </div>
         </Link>
       </div>
-        <Instructions />
-        <Link to={`/multi/9`}> 9 </Link>
+      <Instructions />
+      <Link to={`/multi/9`}> 9 </Link>
     </div>
   );
 };
@@ -33,7 +33,6 @@ const Home = (props) => {
 
 const containerStyle = {
   height: '60vh',
-  border: '1px solid black',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-around',
