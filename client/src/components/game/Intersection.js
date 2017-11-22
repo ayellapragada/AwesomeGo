@@ -17,8 +17,8 @@ const Intersection = props => {
   const starStyle = {
     width: `${TILE_SIZE / 6}px`,
     height: `${TILE_SIZE / 6}px`,
-    marginTop: `${TILE_SIZE / 8}px`,
-    marginLeft: `${TILE_SIZE / 8}px`,
+    marginTop: `-${TILE_SIZE / 8}px`,
+    marginLeft: `-${TILE_SIZE / 8}px`,
     border: '1px solid black',
     backgroundColor: 'black',
     borderRadius: '20px',
@@ -62,12 +62,11 @@ const Intersection = props => {
 
   return (
     <div style={containerStyle}>
+      {star && <div style={starStyle} />}
       <div 
         onClick={handleClickOnIntersection}
         style={{ ...intersectionStyle, ...styleLinks[value] }} 
-      >
-        {star && <div style={starStyle} />}
-      </div>
+      />
     </div>
   );
 };
