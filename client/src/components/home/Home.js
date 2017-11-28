@@ -26,6 +26,10 @@ const Home = (props) => {
       </div>
       <Instructions />
       <Link to={`/multi/9`}> 9 </Link>
+      <div> 
+        When the page first loads, the Node backend on Heroku may take some 
+        time to spin up and start working.
+      </div>
     </div>
   );
 };
