@@ -66,7 +66,8 @@ class Display extends Component {
     this.props.socket.send(JSON.stringify(payload));
   }
 
-  sendMessage() {
+  sendMessage(e) {
+    e.preventDefault();
     const recipientId = 
       ( Number(sessionStorage.getItem('id')) ===
         Number(this.state.board.playerOne.name) ? this.state.board.playerTwo.name : this.state.board.playerOne.name); 
