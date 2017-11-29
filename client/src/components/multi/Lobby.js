@@ -81,6 +81,9 @@ class Lobby extends Component {
             Your ID: {sessionStorage.getItem('id')}
             <br />
             To share the link, give your friend the URL.
+            <br />
+            If neither players load, the server might just be starting up.
+            Heroku has the warmup period.
           </div>
         ) : ( 
           <div>
