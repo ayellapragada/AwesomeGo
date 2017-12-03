@@ -151,17 +151,17 @@ class Display extends Component {
     return (
       <div style={outerContainerStyle}>
         <div>
-          Display: {currentPlayer.name} 
+          Current Players Turn: {currentPlayer.name} 
+          <br />
+          Who's Turn: {Number(currentPlayer.name) === Number(yourId) ? "Yours" : "Theirs"}
           <br />
           Your ID: {yourId}
           <br />
-          {playerOne.name} - {playerOne.captured}
+          Points for: {playerOne.name} - {playerOne.captured}
           <br />
-          {playerTwo.name} - {playerTwo.captured}
+          Points for: {playerTwo.name} - {playerTwo.captured}
           <br />
           Game Status: { over ? "Over" : "In Progress" }
-          <br />
-          Turn: {Number(currentPlayer.name) === Number(yourId) ? "Yours" : "Theirs"}
           <button onClick={this.handlePass} type="text">Pass</button>
         </div>
 

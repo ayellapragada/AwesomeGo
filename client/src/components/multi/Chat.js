@@ -1,28 +1,56 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const Chat = ({ messages, input, updateInput, sendMessage, yourId }) => {
-  const messageList = messages.map((msg, i) => {
-    return(
-      <li style={listItemStyle} key={i}>
-        {msg.playerId === yourId ? "You" : "Them" }: {msg.text}
-      </li>
-    ); 
-  });
+class Chat extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-  return (
-    <div>
-      <form onSubmit={sendMessage}>
-        <input 
-          style={inputStyle} 
-          type="textarea" 
-          onChange={updateInput} 
-          value={input} 
-        />
-      </form>
-      <ul style={listStyle}>{messageList}</ul>
-    </div>
-  );
-};
+  updateScroll() {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+  }
+
+  componentDidMount() {
+    this.updateScroll();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    this.updateScroll();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.updateScroll();
+  }
+
+  render() {
+    const { messages, input, updateInput, sendMessage, yourId } = this.props;
+
+    const messageList = messages.map((msg, i) => {
+      return(
+        <li style={listItemStyle} key={i}>
+          {msg.playerId === yourId ? "You" : "Them" }: {msg.text}
+        </li>
+      ); 
+    });
+
+    return (
+      <div>
+        <form onSubmit={sendMessage}>
+          <input 
+            style={inputStyle} 
+            type="textarea" 
+            onChange={updateInput} 
+            value={input} 
+            placeholder="Send a message!"
+          />
+        </form>
+        <ul style={listStyle}>
+          {messageList} 
+        </ul>
+        <div ref={(el) => { this.messagesEnd = el; }} />
+      </div>
+    );
+  }
+}
 
 const inputStyle = {
   width: '100%',

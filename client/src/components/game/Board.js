@@ -13,7 +13,7 @@ class Board {
 
     this.size = size;
     this.handicap = handicap;
-    this.grid = grid || this.makeGrid(size);
+    this.lastGrid = this.grid = grid || this.makeGrid(size);
     this.history = [];
     this.over = false;
 

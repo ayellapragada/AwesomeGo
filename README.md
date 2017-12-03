@@ -23,6 +23,47 @@ than Chess due to the increased board size, more scope for play, and vastly
 higher choices of available moves per turn. Due to this complexity, building an
 AI for it is very tricky, being orders of complexity larger than similar games like Chess.
 
+![Overall](images/overall.png) 
+
+## Features
+
+### Lobbies
+Utilizes a custom lobby implementation that allows users to connect by using the
+URL.
+Whenever a player joins a lobby, the server sends them a unique ID, and also
+saves that connection on the backend under a unique key in a lookup hash.
+Now that it has a particular ID per player, it makes it very easy to send moves,
+or other messages to that lookup.
+
+![Lobby](images/lobby.png) 
+
+### Chat
+Using the custom lobby implementation earlier, whenever a player wants to send a
+message to their friend, it gets immediately added to their own list of
+messages, then gets sent to the friend as well. All that's being sent by the
+server is a (stringified) small JSON object that lets the player know they got a
+message, and it's sent directly, and only, to that specific player. Due to this
+it's very light weight.
+
+![Chat](images/chat.png) 
+
+### Solo
+You may not always want to play against another person, or you may feel more
+comfortable developing your skills and understanding the game at first by
+playing against a computer. There's an AI included as well, for solo play.
+
+Due to the difficulty in creating a "Good" AI for Go, and also due to the fact
+that it's very difficult to ascertain how good a board state is, there's no real
+reason or use case for a min max tree in this situation. Most high skilled
+players say they go by instinct on what moves to make, so there's no real way to
+evaluate a move and numberally explain why it's good.
+
+The way the AI operates, it finds all the potential groups in the area, then
+determines the weakest grouping and attacks that one. It doesn't look too far
+into the future, so it's very quick and has a incredibly quick response time for
+moves.
+
+![Solo](images/solo.gif) 
 ### Quick Rules
 
 Two players, Black and White, take turns placing a stone (game piece) of
@@ -124,3 +165,5 @@ other person, who receieves the move and makes it on their end as well.
     intersection, using some complex logic handling to figure out if the
     intersection is at the end of a row / col, to figure out if it needs to
     display the entire section or not.
+
+
